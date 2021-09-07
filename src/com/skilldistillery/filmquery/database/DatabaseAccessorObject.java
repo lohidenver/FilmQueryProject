@@ -48,6 +48,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			film.setTitle(rs.getString("title"));
 			film.setDescription(rs.getString("description"));
 			film.setReleaseYear(rs.getInt("release_year"));
+			//film.setLanguageName(rs.getString("language.name"));
 			film.setLanguageId(rs.getInt("language_id"));
 			film.setRentalDuration(rs.getDouble("rental_duration"));
 			film.setRentalRate(rs.getInt("rental_rate"));
@@ -137,9 +138,10 @@ public ArrayList<Integer> searchFilm(String searchTerm) {
 		System.err.println("The application has encountered a SQL Exception.");
 		e.printStackTrace();
 	}
-	return null ;
-	
+	return null;
+
 }
+
 }//end DatabaseAccessorObject
   
   

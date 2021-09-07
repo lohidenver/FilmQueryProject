@@ -57,7 +57,6 @@ public class FilmQueryApp {
 					System.out.println("Here are your results: ");	
 					ArrayList<Integer> film = db.searchFilm(uI);
 				    System.out.println(film);
-					//method for search word
 				} else if (uInput == 3) {
 					System.out.println("You have chosen to exit.");
 					System.exit(0);

@@ -14,13 +14,14 @@ public class Film {
 	private double replacementCost;
 	private String rating;
 	private String specialFeatures;
+	private String language;
 	
 	public Film() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Film(int id, String title, String description, Integer releaseYear, int languageId, int rentalDuration,
+	public Film(int id, String title, String description, Integer releaseYear, int languageId, String language, int rentalDuration,
 			double rentalRate, Integer length, double replacementCost, String rating, String specialFeatures) {
 		super();
 		this.id = id;
@@ -28,6 +29,7 @@ public class Film {
 		this.description = description;
 		this.releaseYear = releaseYear;
 		this.languageId = languageId;
+		this.language = language;
 		this.rentalDuration = rentalDuration;
 		this.rentalRate = rentalRate;
 		this.length = length;
@@ -50,6 +52,8 @@ public class Film {
 		builder.append(releaseYear);
 		builder.append(", languageId=");
 		builder.append(languageId);
+		builder.append(", languageName=");
+		builder.append(language);
 		builder.append(", rentalDuration=");
 		builder.append(rentalDuration);
 		builder.append(", rentalRate=");
@@ -139,7 +143,13 @@ public class Film {
 		this.languageId = languageId;
 	}
 
+	public String getLanguageName() {
+		return language;
+	}
 
+	public void setLanguageName(String language) {
+		this.language = language;
+	}
 	public double getRentalDuration() {
 		return rentalDuration;
 	}
@@ -197,6 +207,11 @@ public class Film {
 
 	public void setSpecialFeatures(String specialFeatures) {
 		this.specialFeatures = specialFeatures;
+	}
+
+	public void setLanguageId(String string) {
+		// TODO Auto-generated method stub
+		
 	}
 
 
