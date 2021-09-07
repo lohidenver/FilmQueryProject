@@ -7,7 +7,16 @@ import java.util.*;
 public interface DatabaseAccessor {
   public Film findFilmById(int filmId);
 //  public Actor findActorById(int actorId);
+  
+  
   public Actor findActorById(int actorId);
 //  public List<Actor> findActorsByFilmId(int filmId);
+  
+  
   public List<Actor> findActorsByFilmId(int filmId);
+
+
+public Film searchFilm(String uI);
+
+
 }

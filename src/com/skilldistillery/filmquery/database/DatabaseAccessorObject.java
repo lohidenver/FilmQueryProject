@@ -117,7 +117,30 @@ try (Connection conn = DriverManager.getConnection(URL, user, pass);
 }
 return actorList;
 }
+
+
+public ArrayList<Integer> searchFilm(String searchTerm) {
+	String sql = "SELECT film.id FROM film WHERE (film.title LIKE ? OR film.description LIKE ?)";
+	try (Connection conn = DriverManager.getConnection(URL, user, pass);
+			PreparedStatement pst = conn.prepareStatement(sql);) {
+		pst.setString(1, "%" + searchTerm + "%");
+		pst.setString(2, "%" + searchTerm + "%");
+		ResultSet rs = pst.executeQuery();
+
+		ArrayList<Integer> filmIdArr = new ArrayList<>();
+		while (rs.next()) {
+			filmIdArr.add(rs.getInt("film.id"));
+		}
+		rs.close();
+		return filmIdArr;
+	} catch (SQLException e) {
+		System.err.println("The application has encountered a SQL Exception.");
+		e.printStackTrace();
+	}
+	return null ;
+	
 }
+}//end DatabaseAccessorObject
   
   
 
