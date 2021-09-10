@@ -13,7 +13,7 @@ class DatabaseAccessTests {
 
   @BeforeEach
   void setUp() throws Exception {
-    db = new DatabaseAccessorObject();
+    db = new DatabaseAccessorObject1();
   }
 
   @AfterEach

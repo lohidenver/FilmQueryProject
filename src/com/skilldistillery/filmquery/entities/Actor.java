@@ -1,10 +1,16 @@
 package com.skilldistillery.filmquery.entities;
 
+import java.util.Objects;
+
 public class Actor {
 
 	private int id;
 	private String firstName;
 	private String lastName;
+	
+	public Actor(int id) {
+		this.id = id;
+		}
 
 	public Actor(int id, String firstName, String lastName) {
 		super();
@@ -46,14 +52,11 @@ public class Actor {
 		return sb.toString();
 	}
 
+
+
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
-		result = prime * result + id;
-		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
-		return result;
+		return Objects.hash(firstName, id, lastName);
 	}
 
 	@Override
@@ -65,19 +68,12 @@ public class Actor {
 		if (getClass() != obj.getClass())
 			return false;
 		Actor other = (Actor) obj;
-		if (firstName == null) {
-			if (other.firstName != null)
-				return false;
-		} else if (!firstName.equals(other.firstName))
-			return false;
-		if (id != other.id)
-			return false;
-		if (lastName == null) {
-			if (other.lastName != null)
-				return false;
-		} else if (!lastName.equals(other.lastName))
-			return false;
-		return true;
+		return Objects.equals(firstName, other.firstName) && id == other.id && Objects.equals(lastName, other.lastName);
+	}
+
+	public void setFilms(Object findFilmsByActorId) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
