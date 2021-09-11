@@ -1,31 +1,26 @@
-package com.skilldistillery.filmquery.entities;
+ppackage com.skilldistillery.filmquery.entities;
 
-import java.util.Objects;
 import java.util.List;
+import java.util.Objects;
 
 public class Film {
 	private int id;
 	private String title;
 	private String description;
-	private String releaseYear;
-	private int languageId;
-	private double rentalDuration;
+	private int releaseYear;
+	private String languageId;
+	private int rentalDuration;
 	private double rentalRate;
-	private Integer length;
+	private int length;
 	private double replacementCost;
 	private String rating;
 	private String specialFeatures;
 	private List<Actor> actor;
-	private String language;
-	
-	public Film() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	
-	public Film(int id, String title, String description, String releaseYear, int languageId, double rentalDuration,
-			double rentalRate, Integer length, double replacementCost, String rating, String specialFeatures,
-			String language, List<Actor> actor) {
+
+
+	public Film(int id, String title, String description, int releaseYear, String languageId, int rentalDuration,
+			double rentalRate, int length, double replacementCost, String rating, String specialFeatures,
+			List<Actor> actor) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -38,72 +33,16 @@ public class Film {
 		this.replacementCost = replacementCost;
 		this.rating = rating;
 		this.specialFeatures = specialFeatures;
-		this.language = language;
 		this.actor = actor;
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Film [id=");
-		builder.append(id);
-		builder.append(", title=");
-		builder.append(title);
-		builder.append(", description=");
-		builder.append(description);
-		builder.append(", releaseYear=");
-		builder.append(releaseYear);
-		builder.append(", languageId=");
-		builder.append(languageId);
-		builder.append(", languageName=");
-		builder.append(language);
-		builder.append(", rentalDuration=");
-		builder.append(rentalDuration);
-		builder.append(", rentalRate=");
-		builder.append(rentalRate);
-		builder.append(", length=");
-		builder.append(length);
-		builder.append(", replacementCost=");
-		builder.append(replacementCost);
-		builder.append(", rating=");
-		builder.append(rating);
-		builder.append(", actors=");
-		builder.append(actor);
-//		for (int i = 0; i < actor.size(); i++) {
-//			builder.append("*-" + actor.get(i)+ "\n");
-//		}
-		
-		builder.append(", specialFeatures=");
-		builder.append(specialFeatures);
-		builder.append("]");
-		return builder.toString();
+	public List<Actor> getActor() {
+		return actor;
 	}
 
 
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(actor, description, id, language, languageId, length, rating, releaseYear, rentalDuration,
-				rentalRate, replacementCost, specialFeatures, title);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Film other = (Film) obj;
-		return Objects.equals(actor, other.actor) && Objects.equals(description, other.description) && id == other.id
-				&& Objects.equals(language, other.language) && languageId == other.languageId
-				&& Objects.equals(length, other.length) && Objects.equals(rating, other.rating)
-				&& Objects.equals(releaseYear, other.releaseYear)
-				&& Double.doubleToLongBits(rentalDuration) == Double.doubleToLongBits(other.rentalDuration)
-				&& Double.doubleToLongBits(rentalRate) == Double.doubleToLongBits(other.rentalRate)
-				&& Double.doubleToLongBits(replacementCost) == Double.doubleToLongBits(other.replacementCost)
-				&& Objects.equals(specialFeatures, other.specialFeatures) && Objects.equals(title, other.title);
+	public Film findFilmById(int filmId) {
+		return null;
 	}
 
 	public int getId() {
@@ -130,19 +69,19 @@ public class Film {
 		this.description = description;
 	}
 
-	public String getReleaseYear() {
+	public int getReleaseYear() {
 		return releaseYear;
 	}
 
-	public void setReleaseYear(String year) {
-		this.releaseYear = year;
+	public void setReleaseYear(int releaseYear) {
+		this.releaseYear = releaseYear;
 	}
 
-	public int getLanguageId() {
+	public String getLanguageId() {
 		return languageId;
 	}
 
-	public void setLanguageId(int languageId) {
+	public void setLanguageId(String languageId) {
 		this.languageId = languageId;
 	}
 
@@ -150,7 +89,7 @@ public class Film {
 		return rentalDuration;
 	}
 
-	public void setRentalDuration(double rentalDuration) {
+	public void setRentalDuration(int rentalDuration) {
 		this.rentalDuration = rentalDuration;
 	}
 
@@ -162,11 +101,11 @@ public class Film {
 		this.rentalRate = rentalRate;
 	}
 
-	public Integer getLength() {
+	public int getLength() {
 		return length;
 	}
 
-	public void setLength(Integer length) {
+	public void setLength(int length) {
 		this.length = length;
 	}
 
@@ -194,42 +133,42 @@ public class Film {
 		this.specialFeatures = specialFeatures;
 	}
 
-	public String getLanguage() {
-		return language;
+	@Override
+	public String toString() {
+		return "-------------------------------------------------------\nFilm title: " + title + "\nDescription: "
+				+ description + ".\nRelease year: " + releaseYear + "\nLanguage: " + languageId + "\nRental duration: "
+				+ rentalDuration + " days\nRental rate: $" + rentalRate + "\nLength: " + length
+				+ " minutes\nReplacement cost: $" + replacementCost + "\nRating: " + rating + "\nSpecial features: "
+				+ specialFeatures + "\n";
 	}
 
-	public void setLanguage(String language) {
-		this.language = language;
+	@Override
+	public int hashCode() {
+		return Objects.hash(actor, description, id, languageId, length, rating, releaseYear, rentalDuration, rentalRate,
+				replacementCost, specialFeatures, title);
 	}
 
-	public List<Actor> getActor() {
-		return actor;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		Film other = (Film) obj;
+		return Objects.equals(actor, other.actor) && Objects.equals(description, other.description) && id == other.id
+				&& Objects.equals(languageId, other.languageId) && length == other.length
+				&& Objects.equals(rating, other.rating) && releaseYear == other.releaseYear
+				&& rentalDuration == other.rentalDuration
+				&& Double.doubleToLongBits(rentalRate) == Double.doubleToLongBits(other.rentalRate)
+				&& Double.doubleToLongBits(replacementCost) == Double.doubleToLongBits(other.replacementCost)
+				&& Objects.equals(specialFeatures, other.specialFeatures) && Objects.equals(title, other.title);
 	}
 
-	public void setActor(List<Actor> actor) {
-		this.actor = actor;
-	}
-
-	public void setReleaseYear(int int1) {
-		// TODO Auto-generated method stub
-		
-	}
 
 
-	
-	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
