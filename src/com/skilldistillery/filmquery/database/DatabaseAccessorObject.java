@@ -12,127 +12,134 @@ import com.skilldistillery.filmquery.entities.Actor;
 import com.skilldistillery.filmquery.entities.Film;
 
 public class DatabaseAccessorObject implements DatabaseAccessor {
-
 	private static final String URL = "jdbc:mysql://localhost:3306/sdvid?useSSL=false";
+	String user = "student";
+	String pass = "student";
 
 	@Override
-	public Film findFilmById(int filmId) throws SQLException {
+	public Film findFilmById(int filmId) {
 		Film film = null;
 		String user = "student";
 		String pass = "student";
-
-		
-		String sql = "SELECT  f.title, f.description, f.release_year, f.rating, l.name FROM film f JOIN language l ON f.language_id = l.id WHERE f.id = ?";
-		Connection conn = DriverManager.getConnection(URL, user, pass);
-		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setInt(1, filmId);
-		ResultSet filmResult = stmt.executeQuery();
-		while (filmResult.next()) {
-			film = new Film();
-			film.setTitle(filmResult.getString(1));
-			film.setDescription(filmResult.getString(2));
-			film.setReleaseYear(filmResult.getString(3));
-			film.setRating(filmResult.getString(4));
-			film.setLanguage(filmResult.getString(5));
-			film.setActor(findActorsByFilmId(6));
-		}
-			filmResult.close();
+		String sqltext = "select * from film join language lang on film.language_id = lang.id where film.id = ?";
+		try {
+			Connection conn = DriverManager.getConnection(URL, user, pass);
+			PreparedStatement stmt = conn.prepareStatement(sqltext);
+			stmt.setInt(1, filmId);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				film = new Film(rs.getInt("id"), rs.getString("title"), rs.getString("description"),
+						rs.getInt("release_year"), rs.getString("name"), rs.getInt("rental_duration"),
+						rs.getDouble("rental_rate"), rs.getInt("length"), rs.getDouble("replacement_cost"),
+						rs.getString("rating"), rs.getString("special_features"),findActorsByFilmId(rs.getInt("film.id")));
+				
+			}
+			rs.close();
 			stmt.close();
 			conn.close();
-
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		return film;
 	}
 
-	public Actor findActorById(int actorId) throws SQLException {
+	@Override
+	public Actor findActorById(int actorId) {
 		Actor actor = null;
 		String user = "student";
 		String pass = "student";
-
-		String sql = "SELECT id, first_name, last_name FROM actor WHERE id = ?";
-		Connection conn = DriverManager.getConnection(URL, user, pass);
-		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setInt(1, actorId);
-		ResultSet actorResult = stmt.executeQuery();
-		if (actorResult.next()) {
-			actor = new Actor(actorId); // Create the object
-			// Here is our mapping of query columns to our object fields:
-			actor.setId(actorResult.getInt(1));
-			actor.setFirstName(actorResult.getString(2));
-			actor.setLastName(actorResult.getString(3));
-
-			actorResult.close();
+		String sqltext = "select * from actor where id = ?";
+		try {
+			Connection conn = DriverManager.getConnection(URL, user, pass);
+			PreparedStatement stmt = conn.prepareStatement(sqltext);
+			stmt.setInt(1, actorId);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				actor = new Actor(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"));
+			}
+			rs.close();
 			stmt.close();
 			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-
 		return actor;
 	}
 
-	public List<Actor> findActorsByFilmId(int filmId) throws SQLException {
-
-		List<Actor> actorList = new ArrayList<>();
+	@Override
+	public List<Actor> findActorsByFilmId(int filmId) {
+		List<Actor> actors = new ArrayList<Actor>();
+		Actor actor = null;
 		String user = "student";
 		String pass = "student";
-		
-		String sql = "SELECT actor.id, actor.first_name, actor.last_name FROM actor JOIN film_actor ON actor.id = film_actor.actor_id  WHERE film_actor.film_id = ?";
+		String sqltext = "select id, film_id, first_name, last_name from actor join film_actor on id = actor_id where film_id = ?";
+		try {
+			Connection conn = DriverManager.getConnection(URL, user, pass);
+			PreparedStatement stmt = conn.prepareStatement(sqltext);
+			stmt.setInt(1, filmId);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				actor = new Actor(rs.getInt("film_id"), rs.getString("first_name"), rs.getString("last_name"));
+				actors.add(actor);
 
-		Connection conn = DriverManager.getConnection(URL, user, pass);
-		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setInt(1, filmId);
-		ResultSet rs = stmt.executeQuery();
-		actorList = new ArrayList<>();
-		while (rs.next()) {
-			Actor actor = new Actor(rs.getInt("actor.id"), rs.getString("actor.first_name"),
-					rs.getString("actor.last_name"));
-			actorList.add(actor);
-		}
-
-		rs.close();
-		stmt.close();
-		conn.close();
-
-		return actorList;
-	}
-
-	
-	public List<Film> findFilmBySearch(String keyword) throws SQLException {
-		Film film = null;
-		List<Film> filmList = new ArrayList<>();
-		String user = "student";
-		String pass = "student";
-		
-
-		String sql = "SELECT  f.title, f.description, f.release_year, f.rating, l.name, f.id FROM film f JOIN language l ON f.language_id = l.id WHERE title LIKE ? OR description LIKE ?";
-		Connection conn = DriverManager.getConnection(URL, user, pass);
-		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setString(1, "%" + keyword + "%");
-		stmt.setString(2, "%" + keyword + "%");
-		ResultSet filmResult = stmt.executeQuery();
-		filmList = new ArrayList<>();
-		while (filmResult.next()) {
-			film = new Film();
-			film.setTitle(filmResult.getString(1));
-			film.setDescription(filmResult.getString(2));
-			film.setReleaseYear(filmResult.getString(3));
-			film.setRating(filmResult.getString(4));
-			film.setActor(findActorsByFilmId(filmResult.getInt(6)));
-			film.setLanguage(filmResult.getString(5));
-
-			filmList.add(film);
-		}
-			filmResult.close();
+			}
+			rs.close();
 			stmt.close();
 			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (actors.size() < 1) {
+			return null;
+		} else {
+			return actors;
 
+		}
 
-		return filmList;
 	}
 
 	@Override
-	public List<Film> searchFilm(String searchTerm) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public List<Film> search(String sch) {
+		List<Film> film = new ArrayList<Film>();
+		String user = "student";
+		String pass = "student";
+		String sqltext = "select * from film join language on film.language_id = language.id where title like ? or description like ?";
+		try {
+			Connection conn = DriverManager.getConnection(URL, user, pass);
+			PreparedStatement stmt = conn.prepareStatement(sqltext);
+			stmt.setString(1, "%" + sch + "%");
+			stmt.setString(2, "%" + sch + "%");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				Film fil = new Film(rs.getInt("id"), rs.getString("title"), rs.getString("description"),
+						rs.getInt("release_year"), rs.getString("name"), rs.getInt("rental_duration"),
+						rs.getDouble("rental_rate"), rs.getInt("length"), rs.getDouble("replacement_cost"),
+						rs.getString("rating"), rs.getString("special_features"),
+						findActorsByFilmId(rs.getInt("film.id")));
+				film.add(fil);
+			}
+			
+			rs.close();
+			stmt.close();
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	
+		if (film.size() < 1)
+			return null;
+		else {
+			return film;
+
+		}
+
+	}
+
 }
+
