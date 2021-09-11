@@ -16,3 +16,8 @@ I am still learning the skills but have not yet completed competency.
 I am struggling and have again sought some outside help to help me catch up.
 I know I am close but I just am not there.  
 This course is really fast and when I miss two days of instruction it really affects me.  It is almost like a snowball effect.
+
+
+Updated:
+
+Got some help with the project.  Everything should be working
